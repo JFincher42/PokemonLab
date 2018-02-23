@@ -3,108 +3,80 @@ package pokemon;
 public class PokemonBase {
 	protected String name;			// The name of the Pokemon
 	protected int health;			// Current health
-	private int initialHealth;		// Where did the Pokemon start life?
-	private boolean healed;			// Have we healed this battle yet?
 	protected int attack;
 	protected int defense;
 	protected int speed;			// OPTIONAL: used for figuring out who goes first
 	
 	public PokemonBase() {
-		this("",0,0,0,0);
 	}
 	
 	public PokemonBase(String name, int health, int attack, int defense, int speed) {
-		this.name = name;
-		this.health = health;
-		this.initialHealth = health;
-		this.healed = false;
-		this.attack = attack;
-		this.defense = defense;
-		this.speed = speed;
 	}
 	
 	public String getName() {
-		return this.name;
+		// Add implementation here
 	}
 	
 	public int getHealth() {
-		return this.health;
+		// Add implementation here
 	}
 	
 	public boolean isDown() {
-		return this.health==0;
+		// Add implementation here
 	}
 	
 	public boolean hasHealed() {
-		return this.healed;
+		// Add implementation here
 	}
 	
 	public int getAttack() {
-		return this.attack;
+		// Add implementation here
 	}
 	
 	public int getDefense() {
-		return this.defense;
+		// Add implementation here
 	}
 	
 	public int getSpeed() {
-		return this.speed;
+		// Add implementation here
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		// Add implementation here
 	}
 	
 	public void setHealth(int health) {
-		this.health = health;
+		// Add implementation here
 	}
 	
 	public void setAttack(int attack) {
-		this.attack = attack;
+		// Add implementation here
 	}
 	
 	public void setDefense(int defense) {
-		this.defense = defense;
+		// Add implementation here
 	}
 	
 	public void setSpeed(int speed) {
-		this.speed = speed;
+		// Add implementation here
 	}
 	
 	public String toString() {
-		return this.name + " (" + this.attack + "/" + this.defense + "), H:" + this.health;
+		// Add implementation here
 	}
 	
 	public int attack(PokemonBase enemy) {
-		int damageAmt = (int)(Math.random()*this.attack) + 1;
-		damageAmt -= enemy.getDefense();
-		if (damageAmt<=0) damageAmt = 0;
-		return damageAmt;
-		//System.out.println(this.name + " attacks " + enemy.getName() + " for " + damageAmt + " damage!");
-		//enemy.damage(damageAmt);
+		// Add implementation here
 	}
 	
 	public void damage(int damageAmt) {
-		this.health -= damageAmt;
-		if (this.health <= 0) {
-			this.health = 0;
-			//System.out.println(this.name + " is down!");
-		}
+		// Add implementation here
 	}
 	
 	public int heal() {
-		if (this.healed) {
-			return 0;
-		}
-		int healedAmt = this.initialHealth - this.health;
-		if (healedAmt > 20)
-			this.health += 20;
-		else
-			this.health = this.initialHealth;
-		//System.out.println(this.name + " has healed " + healed + " points.");
-		//System.out.println(this.name + " now has " + this.health + " health.");
-		this.healed = true;
-		return healedAmt;
+		// Add implementation here
+		// Think about how to track the initial Pokemon health
+		// and how to track whether we've healed this Pokemon or not
 	}
 
 }
