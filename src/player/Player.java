@@ -42,6 +42,22 @@ public class Player {
 		return this.pokemon[this.currentPokemon];
 	}
 	
+	public String toString() {
+		String output = "";
+		if (this.isHuman()){
+			output += "Player " + this.name;
+		} else {
+			output += "Computer";
+		}
+		output += " has the following Pokemon:\n";
+		for (int i=0; i<3; i++) {
+			output+="" + (i+1) + ": " + this.pokemon[i];
+			if (this.pokemon[i].getHealth()==0) output += " (downed)";
+			output += "\n";
+		}
+		return output;
+	}
+	
 	public void selectPokemon(int currentPokemon) {
 		this.currentPokemon = currentPokemon;
 	}
@@ -74,4 +90,11 @@ public class Player {
 		}
 	}
 
+	// Does this player have any active Pokemon still? 
+	public boolean hasActivePokemon() {
+		for (int i=0; i<3; i++) {
+			if (this.pokemon[i].getHealth()>0) return true;
+		}
+		return false;
+	}
 }

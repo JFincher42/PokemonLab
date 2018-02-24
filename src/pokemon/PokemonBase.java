@@ -77,7 +77,7 @@ public class PokemonBase {
 	
 	public int attack(PokemonBase enemy) {
 		int damageAmt = (int)(Math.random()*this.attack) + 1;
-		damageAmt -= enemy.getDefense();
+		damageAmt -= (int)(Math.random()*enemy.getDefense());
 		if (damageAmt<=0) damageAmt = 0;
 		return damageAmt;
 		//System.out.println(this.name + " attacks " + enemy.getName() + " for " + damageAmt + " damage!");

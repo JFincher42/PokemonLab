@@ -2,8 +2,9 @@ package pokemon;
 
 public class PokemonType extends PokemonBase {
 
-	protected String type;					// What type of Pokemon?
-	// Valid types are "Grass", "Fire", and "Water"
+	protected String type;			// What type of Pokemon?
+									// Valid types are "Grass", "Fire", and "Water"
+	public static final String POKEMONTYPES[] = {"Grass", "Fire", "Water"};
 
 	public PokemonType() {
 		this("", "Grass", 0,0,0,0);
