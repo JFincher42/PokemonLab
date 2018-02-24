@@ -73,7 +73,7 @@ public class BattleGround {
 	}
 	
 	public void fight() {
-		// The algorithm here is simple
+		// The algorithm here is as follows:
 		// Each player starts with their first Pokemon
 		// We ask the current player for their command.
 		// The following commands are acceptable:
@@ -101,10 +101,21 @@ public class BattleGround {
 					System.out.println("You can 'attack', 'heal', 'swap', or print 'stats': ");
 					String command = console.next().toLowerCase();
 					if (command.equals("attack")) {
+						int attackAmt = this.getCurrentPlayer().getPokemon().attack(this.getOpponent().getPokemon());
+						this.getOpponent().getPokemon().damage(attackAmt);
+						printAttack(attackAmt);
+						endOfTurn = true;
 					} else if (command.equals("heal")) {
-						
+						int healAmt = this.getCurrentPlayer().getPokemon().heal();
+						endOfTurn = (healAmt!=0);
+						printHeal(healAmt);
 					} else if (command.equals("swap")) {
-						
+						System.out.println("Select from the following list: ");
+						this.getCurrentPlayer().showSwapPokemon();
+						System.out.println("Which one? ");
+						this.getCurrentPlayer().selectPokemon(console.nextInt());
+						System.out.println("Current Pokemon is now: " + this.getCurrentPlayer().getPokemon());
+						endOfTurn = true;
 					} else if (command.equals("stats")) {
 						System.out.println(this.getCurrentPlayer());
 						
@@ -120,12 +131,12 @@ public class BattleGround {
 					if (randomAction < 0.7) {			// 70% chance to attack
 						int attackAmt = this.getCurrentPlayer().getPokemon().attack(this.getOpponent().getPokemon());
 						this.getOpponent().getPokemon().damage(attackAmt);
+						printAttack(attackAmt);
 						endOfTurn = true;
 					} else if (randomAction < 0.85) {	// 15% chance to heal
 						int healAmt = this.getCurrentPlayer().getPokemon().heal();
-						if (healAmt != 0) {
-							endOfTurn = true;
-						}
+						endOfTurn = (healAmt != 0);
+						printHeal(healAmt);
 					} else { 							// Final 15% chance to swap
 					}
 				}
@@ -142,6 +153,23 @@ public class BattleGround {
 		else
 			System.out.println(this.getOpponent().getName() + " has won!");
 		
+	}
+	
+	private void printAttack(int attackAmt) {
+		Pokemon attacker = this.getCurrentPlayer().getPokemon();
+		Pokemon defender = this.getOpponent().getPokemon();
+		System.out.println(this.getCurrentPlayer().getName() + "'s " + attacker.getName() + " attacks " + this.getOpponent().getName() + "'s " + defender.getName() + ", doing " + attackAmt + " damage.");
+		if (defender.isDown())
+			System.out.println(defender.getName() + " is down!");
+	}
+	
+	private void printHeal(int healed) {
+		Pokemon attacker = this.getCurrentPlayer().getPokemon();
+		if (healed!=0)
+			System.out.println(attacker.getName() + " has healed " + healed + " health points.");
+		else
+			System.out.println(attacker.getName() + " didn''t heal anything.");
+
 	}
 	
 	// Pokemon selection process 

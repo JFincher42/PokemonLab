@@ -97,4 +97,12 @@ public class Player {
 		}
 		return false;
 	}
+	
+	public void showSwapPokemon() {
+		for (int i=0; i<3; i++) {
+			if (i != this.currentPokemon && !pokemon[i].isDown()) {
+				System.out.println((i+1) + ": " + pokemon[i]);
+			}
+		}
+	}
 }
