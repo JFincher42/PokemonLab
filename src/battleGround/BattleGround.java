@@ -6,15 +6,34 @@ import pokemon.PokemonType;
 
 import java.util.Scanner;
 
+/**
+ * BattleGround
+ * 
+ * Manages a Pokemon battle between two players
+ * @author jon
+ *
+ */
 public class BattleGround {
 
-	protected Player[] players;
-	private int currentPlayer = 0;
-	private int opponent = 1;
-	private Scanner console;
+	// Inheritable fields
+	protected Player[] players;				// Who is playing?
 	
-	private Pokemon[] battlePokemon = new Pokemon[9];
+	// Private fields
+	private int currentPlayer = 0;			// Which is the current player?
+	private int opponent = 1;				// Who is the opponent?
+	private Scanner console;				// Scanner used for all internal input
 	
+	private Pokemon[] battlePokemon = new Pokemon[9];	// Pokemon available to be selected for this battle
+	
+	/**
+	 * BattleGround
+	 * 
+	 * Default constructor:
+	 * - creates two new players
+	 * - gets player details
+	 * - initializes the list of Pokemon available for battle, and
+	 * - doles out Pokemon to each player
+	 */
 	public BattleGround() {
 		// We use a console everywhere, so just intialize it here
 		console = new Scanner(System.in);
@@ -33,82 +52,135 @@ public class BattleGround {
 		// Now figure out who is playing who
 		this.getPlayers();
 	}
-
+	
+	/**
+	 * finalize
+	 * 
+	 * When we get cleaned up, close the console
+	 */
+	public void finalize() {
+		console.close();
+	}
+	
+	/**
+	 * getPlayers
+	 * 
+	 * Gets details about each player
+	 * We assume we have at least one human player, and possibly one computer player
+	 * Once we get player details, we can dole out the Pokemon
+	 */
 	public void getPlayers() {
+		
 		// We assume there is one human player
 		System.out.print("Player 1, what is your name: ");
 		String name = console.nextLine();
+		if (name.length()==0) name= "Player 1";
 		this.players[this.currentPlayer] = new Player(name, true);
 		
 		// Do we play the PC or another human?
-		System.out.print("\nPlayer 2, what is your name (enter for PC): ");
+		System.out.print("\nPlayer 2, what is your name (enter for a computer opponent): ");
 		name = console.nextLine();
 		if (name.length()==0)
 			this.players[this.opponent] = new Player();
 		else
 			this.players[this.currentPlayer] = new Player(name, true);
 		
-		// Close the console
-		//console.close();
-		
-		// And select the Pokemon
+		// Now select the Pokemon
 		this.selectPokemon();
 		
 	}
 
-	// Cue up the next player, and change the opponent as well 
+	/**
+	 * setNextPlayer
+	 * 
+	 * Changes the active player, and their opponent, to the next player
+	 */
 	public void setNextPlayer() {
+		// Since we only have two players, there are only two choices - 0 and 1
+		// So we just increment currentPlayer, then mod it by 2 to toggle it.
+		// Same with the opponent
 		this.currentPlayer = (this.currentPlayer+1)%2;
 		this.opponent = (this.opponent+1)%2;
 	}
 	
-	// Who is the current player?
+	/**
+	 * getCurrentPlayer
+	 * 
+	 * Who is the current player?
+	 * @return Player object representing the current player
+	 */
 	public Player getCurrentPlayer() {
 		return this.players[this.currentPlayer];
 	}
 	
-	// Who is the opponent?
+	/**
+	 * getOpponent
+	 * 
+	 * Who is the current opponent?
+	 * @return Player object representing the opponent player
+	 */
 	public Player getOpponent() {
 		return this.players[this.opponent];
 	}
 	
+	/**
+	 * fight
+	 * 
+	 * The main fight method.  Implements a game loop, which:
+	 * - presents the current state of the game
+	 * - handles a move by the current player
+	 * - if the move ends the turn, end the players turn
+	 * - check to see if the current player has won
+	 * 
+	 * Human player moves include:
+	 * - attack: attacks the opponent's Pokemon
+	 * 			 If this downs that Pokemon, ask the opponent to swap
+	 * - heal:   heals up to 20 points for the current Pokemon
+	 *           no effect if the current Pokemon has healed already
+	 * - swap:   change to another Pokemon
+	 * - stats:  show all the Pokemon the player has
+	 *           doesn't end the turn
+	 * 
+	 * Computer player moves are handled randomly:
+	 * - attack: 70% of the time
+	 * 			 If this downs the human Pokemon, ask them to swap
+	 * - swap:   15% of the time
+	 * - heal:   15% of the time
+	 * 
+	 * End conditions are whether one player has no active Pokemon left
+	 * Since the current player will never be in that situation, always check the opponent
+	 */
 	public void fight() {
-		// The algorithm here is as follows:
-		// Each player starts with their first Pokemon
-		// We ask the current player for their command.
-		// The following commands are acceptable:
-		// - attack: attacks the opponent's Pokemon
-		// - heal:   heals up to 20 points for the current Pokemone
-		//           no effect if the current Pokemon has healed already
-		// - swap:   change to another Pokemon
-		// - stats:  show all the Pokemon the player has
-		//           doesn't end the turn
-		//
-		// If the player is the computer, they should do the following:
-		// - attack: 70% of the time
-		// - swap:   15% of the time
-		// - heal:   15% of the time
-		//
-		// Keep doing this until one player has no active Pokemon 
 		
+		// Game loop
 		boolean ended = false;
 		while (!ended) {
+			
+			// Turn processing
 			boolean endOfTurn = false;
 			// If the current player is human, get their input
 			if (this.getCurrentPlayer().isHuman()) {
+
 				System.out.println(this.getCurrentPlayer().getName() + ", what do you want to do?");
+				
 				while (!endOfTurn) {
 					System.out.println("You can 'attack', 'heal', 'swap', or print 'stats': ");
 					String command = console.next().toLowerCase();
+					
+					// ATTACK
 					if (command.equals("attack")) {
 						int attackAmt = this.getCurrentPlayer().getPokemon().attack(this.getOpponent().getPokemon());
 						this.getOpponent().getPokemon().damage(attackAmt);
 						printAttack(attackAmt);
 						endOfTurn = true;
+					
+					// HEAL
 					} else if (command.equals("heal")) {
 						int healAmt = this.getCurrentPlayer().getPokemon().heal();
 						endOfTurn = (healAmt!=0);
 						printHeal(healAmt);
+					
+					// SWAP
 					} else if (command.equals("swap")) {
 						System.out.println("Select from the following list: ");
 						this.getCurrentPlayer().showSwapPokemon();
@@ -116,45 +188,63 @@ public class BattleGround {
 						this.getCurrentPlayer().selectPokemon(console.nextInt());
 						System.out.println("Current Pokemon is now: " + this.getCurrentPlayer().getPokemon());
 						endOfTurn = true;
+					
+					// STATS
 					} else if (command.equals("stats")) {
 						System.out.println(this.getCurrentPlayer());
 						
+					// INVALID COMMAND
 					} else {
 						System.out.println("Invalid command: " + command);
 					}
-				}				
+				}
+				
+			// COMPUTER PLAYER
 			} else {
 				// Keep going until it's the end of our turn
 				while (!endOfTurn) {
 					// Generate a random number and use it to figure out what to do
 					double randomAction = Math.random();
-					if (randomAction < 0.7) {			// 70% chance to attack
+					
+					// ATTACK - 70% chance
+					if (randomAction < 0.7) {
 						int attackAmt = this.getCurrentPlayer().getPokemon().attack(this.getOpponent().getPokemon());
 						this.getOpponent().getPokemon().damage(attackAmt);
 						printAttack(attackAmt);
 						endOfTurn = true;
-					} else if (randomAction < 0.85) {	// 15% chance to heal
+						
+					// HEAL - 15% chance
+					} else if (randomAction < 0.85) {
 						int healAmt = this.getCurrentPlayer().getPokemon().heal();
 						endOfTurn = (healAmt != 0);
 						printHeal(healAmt);
-					} else { 							// Final 15% chance to swap
+						
+					// SWAP - 15% chance
+					} else { 
+						// TODO: Implement computer swap
 					}
 				}
 			}
 			
 			
 			// Check for an ending
-			ended = (!this.getCurrentPlayer().hasActivePokemon() || !this.getOpponent().hasActivePokemon());
+			// Since there's no way to down a Pokemon by the current player
+			// we just need to check the opponent's active Pokemon
+			ended = (!this.getOpponent().hasActivePokemon());
 			if (!ended)	this.setNextPlayer();
 		}
 		
-		if (this.getCurrentPlayer().hasActivePokemon())
-			System.out.println(this.getCurrentPlayer().getName() + " has won!");
-		else
-			System.out.println(this.getOpponent().getName() + " has won!");
-		
+		// If we're here, it's because the opponent has no more active Pokemon, so we can print victory for the current player
+		System.out.println(this.getCurrentPlayer().getName() + " has won!");
 	}
 	
+	// PRIVATE METHODS - PRINTING TURN INFO
+	/**
+	 * printAttack
+	 * 
+	 * Prints out details of the current attack
+	 * @param attackAmt How much damage did the current player do to the opponent? 
+	 */
 	private void printAttack(int attackAmt) {
 		Pokemon attacker = this.getCurrentPlayer().getPokemon();
 		Pokemon defender = this.getOpponent().getPokemon();
@@ -163,6 +253,12 @@ public class BattleGround {
 			System.out.println(defender.getName() + " is down!");
 	}
 	
+	/**
+	 * printHeal
+	 * 
+	 * Prints details of a player heal
+	 * @param healed How many health points did the current player heal? 
+	 */
 	private void printHeal(int healed) {
 		Pokemon attacker = this.getCurrentPlayer().getPokemon();
 		if (healed!=0)
@@ -171,18 +267,30 @@ public class BattleGround {
 			System.out.println(attacker.getName() + " didn''t heal anything.");
 
 	}
-	
-	// Pokemon selection process 
+
+	/**
+	 * selectPokemon
+	 * 
+	 * Implements the Pokemon selection process prior to the battle
+	 * There are three rounds:
+	 * - starting with Player 1, show the available Pokemon
+	 * - Ask them to pick
+	 * - add their selected Pokemon to their list
+	 * - repeat for player 2
+	 * 
+	 * If player 2 is the computer, make a random selection
+	 */
 	private void selectPokemon() {
-		// Three rounds of selections
-		// Start with Player 1, then alternate until each has three Pokemon
-		int round = 0;
-		int remaining = 9;
+		int round = 0;					// Which round is it?
+		int remaining = 9;				// How many Pokemon are remaining?
 		
 		// We're selecting six Pokemon
 		while (round < 6) {
+			
 			// Is the current player human?
 			Player current = getCurrentPlayer();
+			
+			// HUMAN
 			if (current.isHuman()) {
 				// Get their selection
 				int selection = 0;
@@ -196,6 +304,8 @@ public class BattleGround {
 				
 				// Remove that Pokemon from the list and consolidate the remaining 
 				removePokemon(selection-1);
+				
+			// COMPUTER
 			} else {
 				// It's the computer, just pick a random one
 				int selection = (int)(Math.random()*remaining);
@@ -203,14 +313,21 @@ public class BattleGround {
 				System.out.println("The computer selected: " + battlePokemon[selection] + "\n");
 				removePokemon(selection);
 			}
+			
 			// Reduce the number remaining, increment the count, and change the current player
 			remaining -= 1;
 			round += 1;
 			this.setNextPlayer();
 		}
-		//console.close();
 	}
-	
+
+	/**
+	 * removePokemon
+	 * 
+	 * Removes a Pokemon from the list of battle ready Pokemon
+	 * Consolidate the list as well, moving all active Pokemon to left in the list
+	 * @param selection Index of the selected Pokemon in the list 
+	 */
 	private void removePokemon(int selection) {
 		battlePokemon[selection] = null;
 		// Consolidate the rest
@@ -228,6 +345,11 @@ public class BattleGround {
 		}
 	}
 	
+	/**
+	 * showRemainingPokemon
+	 * 
+	 * Shows the current list of remaining Pokemon
+	 */
 	private void showRemainingPokemon() {
 		int count = 0;
 		System.out.println("REMAINING POKEMON");
