@@ -9,43 +9,43 @@ public class Player {
 	protected Pokemon[] pokemon;
 
 	public Player() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public Player(String name, boolean human) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public String getName() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public boolean isHuman() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void setName(String name) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void setHuman(boolean human) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public Pokemon getPokemon() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void selectPokemon(int currentPokemon) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void addPokemon(Pokemon pokemon) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void removePokemon(int position) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 }

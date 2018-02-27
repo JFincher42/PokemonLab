@@ -11,19 +11,19 @@ public class Pokemon extends PokemonType {
 	}
 	
 	public double getCritChance() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public void setCritChance(double critChance) {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public String toString() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 	
 	public boolean criticalHit() {
-		// Add implementation here
+		// TODO: Add your implementation here
 	}
 
 }
