@@ -2,23 +2,22 @@
 ## Introduction:
 The objective of this assignment is to create a text-based game (based on Pokemon), where the user creates set of Pokemon to battle against the computer’s Pokemon.  This project will contain multiple different classes representing different Pokemon, a Player class to manage the players, a Battle Class that manages the game, and a simple main() to kick things off.  Each are described below.  
 
-* `PokemonBase` Class - 10 points
-* `PokemonType` class - 10 points
+* 10 points: `PokemonBase` class
+* 10 points: `PokemonType` class
   * extends `PokemonBase` class
-* `Pokemon` Characters class - 10 points
+* 10 points: `Pokemon` Characters class
   * extends `PokemonType` class
-* `Player` Class - 10	points
-* `BattleGround` Class and Final Game - 10 points
-* Overall Style Points - 25	points
-  * Good comments - 5 points
-  * Indentation - 5 points
-  * Descriptive variable names - 5 points
-  * Code reuse - 5 points
-  * Smart algorithm - 5 points
+* 10 points: `Player` Class
+* 10 points: `BattleGround` Class and Final Game
+* 25 points: Overall Style Points:
+  * 5 points: Good comments
+  * 5 points: Indentation
+  * 5 points: Descriptive variable names
+  * 5 points: Code reuse
+  * 5 points: Smart algorithm
 
 Total - 75 points  
 Extra Credit - 25 points
-
  
 ## Class Hierarchy
 The classes are arranged as follows:
@@ -45,13 +44,13 @@ Lastly, your `main()` method should be as simple as creating a new `BattleGround
 This class is the superclass for all Pokemon, and simulates the basic behavior of a Pokemon in the game. It must contain all the fields and methods described below – additional fields and methods can be created as necessary.  It is up to you to select the proper access modifier for each.
 ### Fields
 * name
-  * A String that holds the name of the Pokemon.
+  * A `String` that holds the name of the Pokemon.
 * health
-  * An int that tracks how much health the Pokemon currently has.
+  * An `int` that tracks how much health the Pokemon currently has.
 * attack
-  * An int that tracks how strong the Pokemon attacks are.
+  * An `int` that tracks how strong the Pokemon attacks are.
 * defense
-  * An int that tracks the strength of the Pokemon’s defense.
+  * An `int` that tracks the strength of the Pokemon’s defense.
 
 ### Methods
 * `PokemonBase()`  
@@ -61,21 +60,21 @@ This class is the superclass for all Pokemon, and simulates the basic behavior o
   You must implement appropriate getters and setters for each field.
 
 * toString  
-  You must implement an appropriate `toString()` method. It should return a string representing all the data about the given Pokemon, in a format suitable for your game.
+  You must implement an appropriate `toString()` method. It returns a `String` representing all the data about the given Pokemon, in a format suitable for your game.
 
-* `void attack(PokemonBase enemy)`  
+* `int attack(PokemonBase enemy)`  
   Implements an attack on the provided enemy.
 
-  There must be an `attack()` method that receives a PokemonBase object, representing the Pokemon being attacked. This method calculates a random amount of damage between 1 and the difference between the attacking Pokemon’s attack and the attacked Pokemon’s defense. It prints out the following message:
+  There must be an `attack()` method that receives a PokemonBase object, representing the Pokemon being attacked. This method calculates a random amount of damage between 1 and the difference between the attacking Pokemon’s attack and the attacked Pokemon’s defense, and returns that value. After an attack, the following message is displayed:
 
   >*name* attacks the *enemy name* doing *damage* damage.
 
-  and reduces the enemy Pokemon’s health by the damage amount calculated.
+  The enemy Pokemon’s health is reduced by the damage amount returned.
 
 * `void damage(int damageAmt)`  
   Reduces Pokemon health by a set amount.
 
-  There must be a damage() method that allows the Pokemon’s health to be reduced by the amount of damage passed as parameter damageAmt. It should not allow the health to drop below zero. It should display the following message:
+  The `damage()` method reduces the Pokemon’s health by the amount passed as parameter damageAmt. It should not allow the health to drop below zero. After damage is handled, the following message is displayed:
 
   >*name* has *health* health left.
 
@@ -83,10 +82,10 @@ This class is the superclass for all Pokemon, and simulates the basic behavior o
 
   >*name* is down!
 
-* `void heal()`  
+* `int heal()`  
   Heals a Pokemon once per battle.
 
-  The `heal()` method adds up to 20 health back to the Pokemon, but can only be used once per battle.  `heal()` should not increase to the Pokemon’s initial health – for example, if a Pokemon has taken only 10 damage, `heal()` should only restore 10 points.  After it completes, it prints the following message:
+  The `heal()` method adds up to 20 health back to the Pokemon, but can only be used once per battle, and returns the amount of health restored.  `heal()` should not increase to the Pokemon’s initial health – for example, if a Pokemon has taken only 10 damage, `heal()` should only restore 10 points.  After it completes, the following message is displayed:
 
   >*name* has healed *healed* points.  
   >*name* has *health* health left. 
@@ -109,7 +108,7 @@ This class must implement the fields and methods below – additional fields and
 * Various accessors  
   You must implement getters and setters for each field.
 
-* `toString()`  
+* `String toString()`  
   You must implement an appropriate `toString()` method. The `toString()` method should return data about the Pokemon type, in a format suitable for your game.
 
 * `double advantage(PokemonType enemy)`  
@@ -129,7 +128,7 @@ This class must implement the fields and methods below – additional fields and
   Fire            x2      x1/2    NONE
   ```
 
-* `void attack(PokemonBase enemy)`  
+* `int attack(PokemonBase enemy)`  
   (Override) Replace the `PokemonBase.attack()` method with one which takes type advantages into account.
 
   You will override the `attack()` method from PokemonBase in your `PokemonType` class to address the advantage this Pokemon has over the enemy.  You should use `super` to call the original `attack()` method, and modify the result accordingly. 
@@ -150,10 +149,10 @@ This class extends the `PokemonType` class, and simulates the actual Pokemon. It
 * Various accessors  
     You must implement appropriate getters and setters for each field.
 
-* `toString()`  
+* `String toString()`  
 	You must implement an appropriate `toString()` method.
 
-* `void attack(PokemonBase enemy)`  
+* `int attack(PokemonBase enemy)`  
     (Override) Replace the `PokemonType.attack()` method with one which takes critical hit chances into account.
 
     You should use super to call the original `attack()` method, and modify the result accordingly.
@@ -170,11 +169,11 @@ The `Player` class must contain all the fields and methods described below – a
 
 ### Fields
 * `name`  
-	A String representing the name of the player.
+	A `String` representing the name of the player.
 * `human`  
 	A `boolean` indicating if the player is human or not
 * `pokemon`  
-	An array holding up to three (3) Pokemon 
+	An array holding up to three (3) Pokemon objects.
 
 ### Methods
 * `Player()`  
@@ -183,16 +182,16 @@ The `Player` class must contain all the fields and methods described below – a
 * Various accessors  
     You must implement appropriate getters and setters for each field.
 
-* `toString()`  
+* `String toString()`  
 	You must implement an appropriate `toString()` method.
 
-* `addPokemon(Pokemon)`  
+* `void addPokemon(Pokemon pokemon)`  
     Adds a Pokemon to the player's list. If the player already has three Pokemon, this does nothing.
 
-* `removePokemon(int)`  
+* `void removePokemon(int index)`  
 	Removes the Pokemon at the provided index from the players list. If the index is invalid, or there is no Pokemon there, this does nothing,
 
-* `selectPokemon(int)`  
+* `void selectPokemon(int index)`  
 	Selects the Pokemon at the provided index as the current Pokemon for attack and defense.
 	
 ## BattleGround class
@@ -205,7 +204,7 @@ The `BattleGround` is where all the battles take place.  This class:
 The `BattleGround` class must contain all the fields and methods described below – additional fields and methods can be created as necessary.  It is up to you to select the proper access modifier for each.
 
 ### Fields
-* `players[]`  
+* `Player players[]`  
 	Array containing `Player` objects for each human or computer player. For the initial battle, this array contains only two `Player` objects.
 
 ### Methods
@@ -215,7 +214,7 @@ The `BattleGround` class must contain all the fields and methods described below
 * Various accessors  
     You must implement appropriate getters and setters for each field.
 
-* `setNextPlayer()`  
+* `void setNextPlayer()`  
 	Change the current active player
 
 * `Player getCurrentPlayer()`  
@@ -224,7 +223,7 @@ The `BattleGround` class must contain all the fields and methods described below
 * `Player getOpponent()`  
 	Returns the object representing the current opponent
 
-* `fight()`  
+* `void fight()`  
 	Manages the battle.
 
     The `fight()` method implements a basic game loop, which:
